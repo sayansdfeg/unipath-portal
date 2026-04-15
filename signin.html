@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPath — Вход</title>
+    <link rel="stylesheet" href="_shared.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .signin-container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .signin-container h2 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .signin-container p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px rgba(91, 77, 255, 0.1);
+            background: var(--bg-secondary);
+        }
+
+        .error-text {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            display: none;
+        }
+
+        .error-text.show {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent-main);
+            color: var(--bg-primary);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1.5rem;
+            position: relative;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91, 77, 255, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            margin: 0 auto;
+            border-width: 2px;
+        }
+
+        .submit-btn.loading {
+            color: transparent;
+        }
+
+        .submit-btn.loading .spinner {
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .form-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-footer a {
+            color: var(--accent-main);
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            color: var(--accent-light);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .forgot-password a {
+            color: var(--accent-main);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            color: var(--accent-light);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .signin-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .signin-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-group input {
+                padding: 0.75rem;
+            }
+
+            .submit-btn {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="signin-container">
+    <h2>Welcome Back</h2>
+    <p>Please enter your details to sign in</p>
+
+    <form id="signinForm">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" placeholder="john@example.com" required>
+            <div class="error-text" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="••••••••" required>
+            <div class="error-text" id="passwordError"></div>
+        </div>
+
+        <button class="submit-btn" type="submit">
+            Sign In
+            <span class="spinner"></span>
+        </button>
+    </form>
+
+    <div class="forgot-password">
+        <a href="#">Forgot password?</a>
+    </div>
+
+    <div class="form-footer">
+        <p>Don't have an account? <a href="registerpage.php">Sign Up</a></p>
+    </div>
+</div>
+
+<script src="_shared.js"></script>
+<script>
+document.getElementById('signinForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const button = event.target.querySelector('.submit-btn');
+
+    // Clear previous errors
+    document.getElementById('emailError').classList.remove('show');
+    document.getElementById('passwordError').classList.remove('show');
+
+    // Validate email
+    if (!FormValidator.email(email)) {
+        document.getElementById('emailError').textContent = 'Please enter a valid email address';
+        document.getElementById('emailError').classList.add('show');
+        return;
+    }
+
+    // Validate password
+    if (!FormValidator.password(password)) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+        document.getElementById('passwordError').classList.add('show');
+        return;
+    }
+
+    // Set loading state
+    setButtonLoading(button, true);
+
+    try {
+        const response = await fetch('authentication.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            toast.success('Signed in successfully! Redirecting...');
+            setTimeout(() => {
+                window.location.href = 'mainpage.php';
+            }, 1500);
+        } else {
+            toast.error(data.message || 'Sign in failed. Please try again.');
+            setButtonLoading(button, false);
+        }
+    } catch (error) {
+        toast.error('Network error. Please try again.');
+        setButtonLoading(button, false);
+    }
+});
+</script>
+
+</body>
+</html>

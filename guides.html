@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPath — Гайды и Советы</title>
+    <link rel="stylesheet" href="_shared.css">
+    <style>
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* === SEARCH & TABS === */
+        .guides-header {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px rgba(91, 77, 255, 0.1);
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.65rem 1.2rem;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent-main);
+            color: var(--accent-main);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-main);
+            color: var(--bg-primary);
+            border-color: var(--accent-main);
+        }
+
+        /* === ACCORDION === */
+        .guides-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .accordion-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .accordion-item:hover {
+            border-color: var(--accent-main);
+            box-shadow: 0 6px 20px rgba(91, 77, 255, 0.15);
+        }
+
+        .accordion-header {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .accordion-header.active {
+            background: linear-gradient(135deg, var(--accent-main), var(--accent-light));
+            border-bottom-color: var(--accent-main);
+            color: white;
+        }
+
+        .accordion-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            flex-grow: 1;
+        }
+
+        .accordion-toggle {
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .accordion-header.active .accordion-toggle {
+            transform: rotate(180deg);
+        }
+
+        .guide-metadata {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .metadata-item {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .accordion-content {
+            padding: 1.5rem;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .accordion-content.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .guide-text {
+            color: #a0a0a0;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .guide-tips {
+            background: rgba(91, 77, 255, 0.1);
+            border-left: 3px solid var(--accent-main);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .guide-tips strong {
+            color: var(--text-primary);
+        }
+
+        .read-time {
+            display: inline-block;
+            background: rgba(91, 77, 255, 0.15);
+            color: var(--accent-main);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-main);
+            width: 0%;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .guides-container {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-metadata {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .category-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                gap: 0.3rem;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- === HEADER === -->
+<nav style="background: var(--bg-primary); padding: 1rem 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <a href="mainpage.php" style="color: #fff; font-size: 1.3rem; font-weight: 900; text-decoration: none;">◆ UniPath</a>
+        <a href="mainpage.php" style="color: #a0a0a0; text-decoration: none;">← Back</a>
+    </div>
+</nav>
+
+<!-- === SECTION === -->
+<section class="section">
+    <div class="container">
+        <h1 class="section-title">📚 Гайды и Советы</h1>
+        <p class="section-subtitle">Развернутые советы о поступлении в университеты мира и подготовке к экзаменам</p>
+    </div>
+</section>
+
+<!-- === SEARCH & FILTERS === -->
+<section class="section">
+    <div class="container">
+        <div class="guides-header">
+            <div class="search-box">
+                <input type="text" id="guideSearch" placeholder="🔍 Ищи гайды по названию или ключевым словам...">
+            </div>
+
+            <div class="category-tabs">
+                <button class="tab-btn active" data-category="all">Все гайды</button>
+                <button class="tab-btn" data-category="exams">Экзамены</button>
+                <button class="tab-btn" data-category="application">Подача заявки</button>
+                <button class="tab-btn" data-category="essays">Эссе</button>
+                <button class="tab-btn" data-category="interviews">Интервью</button>
+                <button class="tab-btn" data-category="preparation">Подготовка</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- === GUIDES CONTENT === -->
+<section class="section">
+    <div class="container">
+        <div class="guides-container" id="guidesContainer"></div>
+    </div>
+</section>
+
+<!-- === FOOTER === -->
+<footer>
+    <div class="container">
+        <p>© 2025 UniPath. Помогаем студентам найти идеальный университет. | <a href="#">Контакты</a> | <a href="#">Политика</a></p>
+    </div>
+</footer>
+
+<script src="_shared.js"></script>
+<script>
+const guides = [
+    { id: 1, title: "Как подготовиться к IELTS: Полный план", category: "exams", readTime: 8, content: "IELTS (International English Language Testing System) — обязательный экзамен для абитуриентов из стран с английским как иностранным языком. Большинство топ-университетов требуют минимум 6.5-7.5 баллов...", tips: "Уделяй минимум 12 недель подготовке. Практикуй Speaking ежедневно с носителем языка или AI-партнером." },
+    { id: 2, title: "SAT vs ACT: Какой экзамен выбрать?", category: "exams", readTime: 10, content: "SAT и ACT — два главных стандартизированных теста для поступления в американские университеты. Оба принимаются топ-вузами, но имеют разные форматы....", tips: "Пройди пробный тест обоих экзаменов и выбери тот, который больше подходит твоему стилю." },
+    { id: 3, title: "Структура идеального Statement of Purpose", category: "essays", readTime: 12, content: "Statement of Purpose (SOP) — ключевой документ в твоей заявке. Он раскрывает твои мотивы, цели и почему именно этот университет идеален для тебя...", tips: "Начни с конкретной истории из твоей жизни. Не просто перечисляй достижения — покажи, кто ты есть." },
+    { id: 4, title: "Как написать сильное эссе для Common App", category: "essays", readTime: 15, content: "Common App Essay — это твой шанс показать приемной комиссии свою уникальность в 650 словах. Темы варьируются, но главное — подлинность...", tips: "Напиши 5 вариантов и попроси отозвать друзей. Выбери тот, который по-настоящему резонирует." },
+    { id: 5, title: "Подготовка к университетском интервью", category: "interviews", readTime: 9, content: "Интервью — это возможность для приемной комиссии узнать тебя лучше. Обычно длится 30-60 минут и может быть очным, по Zoom или с интервьюером из университета...", tips: "Практикуй ответы на классические вопросы: 'Расскажи о себе', 'Почему наш университет?', 'Какой твой самый большой провал?'" },
+    { id: 6, title: "Как выбрать идеального recommender для письма", category: "application", readTime: 7, content: "Письма рекомендаций (Letters of Recommendation) — это голоса педагогов, которые подтверждают твои способности. Обычно требуется 2-3 письма от учителей-предметников...", tips: "Выбери учителей, которые хорошо знают твою работу и смогут привести конкретные примеры твоих достижений." },
+    { id: 7, title: "GPA vs COVID-19: Как объяснить падение оценок", category: "application", readTime: 6, content: "Если твой GPA упал или у тебя были проблемы в школе, не скрывай это. Приемная комиссия хочет понять контекст и твою реакцию на трудности...", tips: "Будь честен, но оптимистичен. Объясни, что произошло, и как ты из этого вышел сильнее." },
+    { id: 8, title: "Финансовая помощь: Как получить стипендию", category: "preparation", readTime: 11, content: "Финансовая помощь для иностранных студентов часто ограничена, но возможности всё же есть. Некоторые университеты предлагают need-blind admission и 100% покрытие нужды...", tips: "Подай заявку в 5-7 университетов: 2 вероятных (Likely), 3 целевых (Target), 2 страховых (Safety)." },
+    { id: 9, title: "Как объяснить слабые результаты вступительных тестов", category: "exams", readTime: 8, content: "Низкие баллы на SAT/ACT не приговор. Многие топ-университеты учитывают обстоятельства и позволяют пересдать тест...", tips: "Если ты пересдаешь, укажи это в дополнительном эссе и объясни, как мог улучшиться." },
+    { id: 10, title: "Как построить сильное портфолио проектов", category: "preparation", readTime: 10, content: "Особенно для CS и инженерных программ портфолио может перевесить даже низкие оценки. Университеты хотят видеть, что ты можешь реально создавать...", tips: "Разработай 2-3 значимые проекта с GitHub, Medium статьями или видеодемонстрацией." },
+];
+
+const container = document.getElementById('guidesContainer');
+const searchInput = document.getElementById('guideSearch');
+const tabButtons = document.querySelectorAll('.tab-btn');
+
+let currentCategory = 'all';
+
+function renderGuides(data) {
+    container.innerHTML = '';
+    
+    if (data.length === 0) {
+        container.innerHTML = '<div class="no-results">No guides found. Try adjusting your filters.</div>';
+        return;
+    }
+
+    data.forEach((guide, index) => {
+        const item = document.createElement('div');
+        item.className = 'accordion-item';
+
+        item.innerHTML = `
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div>
+                    <h3>${guide.title}</h3>
+                    <div class="guide-metadata">
+                        <span class="metadata-item">📖 <span class="read-time">${guide.readTime} min read</span></span>
+                        <span class="metadata-item">🏷️ ${guide.category}</span>
+                    </div>
+                </div>
+                <span class="accordion-toggle">▼</span>
+            </div>
+            <div class="accordion-content">
+                <p class="guide-text">${guide.content}</p>
+                <div class="guide-tips">
+                    <strong>💡 Pro Tip:</strong> ${guide.tips}
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(item);
+    });
+}
+
+function filterGuides() {
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    const filtered = guides.filter(guide => {
+        const matchCategory = currentCategory === 'all' || guide.category === currentCategory;
+        const matchSearch = !searchTerm || guide.title.toLowerCase().includes(searchTerm) || guide.category.includes(searchTerm);
+        return matchCategory && matchSearch;
+    });
+
+    renderGuides(filtered);
+}
+
+function toggleAccordion(header) {
+    const content = header.nextElementSibling;
+    const isActive = header.classList.contains('active');
+
+    // Close all other accordions
+    document.querySelectorAll('.accordion-header.active').forEach(h => {
+        if (h !== header) {
+            h.classList.remove('active');
+            h.nextElementSibling.classList.remove('active');
+        }
+    });
+
+    // Toggle current
+    header.classList.toggle('active');
+    content.classList.toggle('active');
+}
+
+// Tab filter
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentCategory = this.dataset.category;
+        filterGuides();
+    });
+});
+
+// Search filter
+searchInput.addEventListener('input', filterGuides);
+searchInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') filterGuides();
+});
+
+// Initialize
+renderGuides(guides);
+</script>
+
+</body>
+</html>

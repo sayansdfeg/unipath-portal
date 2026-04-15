@@ -1,0 +1,384 @@
+<!-- MAIN ACTIVE PAGE: alumni.html -->
+<!-- Status: ✓ UPDATED TO NEW DESIGN (v2024) -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPath — Выпускники</title>
+    <link rel="stylesheet" href="_shared.css">
+    <style>
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* === SEARCH SECTION === */
+        .search-bar {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px rgba(91, 77, 255, 0.1);
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-tag:hover {
+            border-color: var(--accent-main);
+            color: var(--accent-main);
+        }
+
+        .filter-tag.active {
+            background: var(--accent-main);
+            color: var(--bg-primary);
+            border-color: var(--accent-main);
+        }
+
+        /* === GRID === */
+        .alumni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* === CARD === */
+        .alumni-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .alumni-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-main);
+            box-shadow: 0 10px 30px rgba(91, 77, 255, 0.2);
+        }
+
+        .alumni-header {
+            background: linear-gradient(135deg, var(--accent-main), var(--accent-light));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .alumni-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 auto 1rem;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .alumni-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .alumni-university {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .alumni-body {
+            padding: 1.5rem;
+        }
+
+        .alumni-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .info-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            color: #a0a0a0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .achievement-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-tag {
+            background: rgba(91, 77, 255, 0.15);
+            color: var(--accent-main);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(91, 77, 255, 0.3);
+        }
+
+        .alumni-quote {
+            style: italic;
+            color: #a0a0a0;
+            border-left: 3px solid var(--accent-main);
+            padding-left: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .alumni-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filters {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- === HEADER === -->
+<nav style="background: var(--bg-primary); padding: 1rem 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <a href="mainpage.php" style="color: #fff; font-size: 1.3rem; font-weight: 900; text-decoration: none;">◆ UniPath</a>
+        <a href="mainpage.php" style="color: #a0a0a0; text-decoration: none;">← Back</a>
+    </div>
+</nav>
+
+<!-- === SECTION === -->
+<section class="section">
+    <div class="container">
+        <h1 class="section-title">🎓 Наши Выпускники</h1>
+        <p class="section-subtitle">Истории успеха студентов, которые поступили в лучшие университеты мира</p>
+    </div>
+</section>
+
+<!-- === SEARCH === -->
+<section class="section">
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="alumniSearch" placeholder="🔍 Найди по названию университета, имени или карьере...">
+            <div class="search-filters">
+                <button class="filter-tag active" data-filter="all">All</button>
+                <button class="filter-tag" data-filter="USA">USA</button>
+                <button class="filter-tag" data-filter="UK">UK</button>
+                <button class="filter-tag" data-filter="EU">Europe</button>
+                <button class="filter-tag" data-filter="Asia">Asia</button>
+                <button class="filter-tag" data-filter="Canada">Canada</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- === ALUMNI GRID === -->
+<section class="section">
+    <div class="container">
+        <div class="alumni-grid" id="alumniGrid"></div>
+    </div>
+</section>
+
+<!-- === FOOTER === -->
+<footer>
+    <div class="container">
+        <p>© 2025 UniPath. Помогаем студентам найти идеальный университет. | <a href="#">Контакты</a> | <a href="#">Политика</a></p>
+    </div>
+</footer>
+
+<script src="_shared.js"></script>
+<script>
+const alumni = [
+    { name: "Айгерим Нуралиева", region: "USA", university: "MIT", degree: "BS Computer Science", year: 2021, role: "Software Engineer at Google", achievements: ["Google Scholarship", "Dean's List", "Hackathon Winner"], avatar: "👩‍💻", quote: "MIT дал мне не просто образование, а семью инженеров, которые думают о том, как менять мир." },
+    { name: "Ерасыл Байбосынов", region: "USA", university: "Stanford", degree: "MS Electrical Engineering", year: 2022, role: "Hardware Engineer at Tesla", achievements: ["Graduate Fellowship", "Published Researcher", "Patent Holder"], avatar: "👨‍🔬", quote: "Silicon Valley всегда мне казался недостижимым, но Stanford открыл двери в его сердце." },
+    { name: "Жания Кенесбаева", region: "UK", university: "Oxford", degree: "MBA", year: 2023, role: "Management Consultant at McKinsey", achievements: ["Rhodes Scholarship", "Debate Captain", "Oxford Prize"], avatar: "👩‍💼", quote: "Oxford — это не только обучение, это вход в глобальную сеть влияния и дружбы." },
+    { name: "Дарын Сейтов", region: "EU", university: "ETH Zurich", degree: "MSc Physics", year: 2022, role: "Physicist at CERN", achievements: ["CERN Fellowship", "Patent", "Published 5 Papers"], avatar: "👨‍🔬", quote: "В ETH я понял, что наука — это не карьера, это призвание, которое объединяет человечество." },
+    { name: "Амина Абдулхалимова", region: "USA", university: "Harvard", degree: "MD", year: 2024, role: "Resident Physician at Johns Hopkins", achievements: ["Scholarship", "Research Fellow", "Award"], avatar: "👩‍⚕️", quote: "Harvard Medical School помог мне осознать, что врача требует не просто знание, а сострадание и наука." },
+    { name: "Максим Петров", region: "Canada", university: "University of Toronto", degree: "BS Mathematics", year: 2021, role: "Quantitative Analyst at Jane Street", achievements: ["Scholarship", "Putnam Fellow", "Internship Winner"], avatar: "👨‍💻", quote: "Toronto дал мне фундамент в математике, который открыл двери на Wall Street." },
+    { name: "Сара Мухаметова", region: "Asia", university: "NUS Singapore", degree: "BS Computer Science", year: 2022, role: "Product Manager at Bytedance", achievements: ["NUS Scholarship", "Hackathon Winner", "Startup Founder"], avatar: "👩‍💻", quote: "NUS соединила мен интеллекты Азии. Дружба, которую я получил, ценнее диплома." },
+    { name: "Азамат Коспеков", region: "EU", university: "Technical University of Munich", degree: "MSc Computer Science", year: 2023, role: "ML Engineer at Zalando", achievements: ["TUM Excellence Fellowship", "Published 2 Papers", "Patent"], avatar: "👨‍💻", quote: "TUM показал мне, что немецкая инженерия — это реальность, которая меняет мир каждый день." },
+    { name: "Лера Артаева", region: "UK", university: "Imperial College London", degree: "MSc Materials Science", year: 2023, role: "Materials Scientist at Shell", achievements: ["Imperial Scholarship", "Research Award", "Published"], avatar: "👩‍🔬", quote: "Imperial — это не просто университет, это место, где наука коснулась меня на уровне души." },
+    { name: "Денис Мартынов", region: "USA", university: "Carnegie Mellon", degree: "BS Computer Science", year: 2021, role: "Senior Engineer at Meta", achievements: ["Scholarship", "Hackathon Champion", "Startup Experience"], avatar: "👨‍💻", quote: "CMU научил меня думать как на 10 шагов вперед, не забывая о настоящем моменте." },
+];
+
+const grid = document.getElementById('alumniGrid');
+const searchInput = document.getElementById('alumniSearch');
+const filterTags = document.querySelectorAll('.filter-tag');
+
+let currentFilter = 'all';
+
+function renderAlumni(data) {
+    grid.innerHTML = '';
+
+    if (data.length === 0) {
+        grid.innerHTML = '<div class="no-results">No alumni found. Try adjusting your search.</div>';
+        return;
+    }
+
+    data.forEach(person => {
+        const card = document.createElement('div');
+        card.className = 'alumni-card';
+
+        card.innerHTML = `
+            <div class="alumni-header">
+                <div class="alumni-avatar">${person.avatar}</div>
+                <div class="alumni-name">${person.name}</div>
+                <div class="alumni-university">${person.university}</div>
+            </div>
+            <div class="alumni-body">
+                <div class="alumni-info">
+                    <div class="info-item">
+                        <div class="info-icon">🎓</div>
+                        <div class="info-content">
+                            <div class="info-label">Degree</div>
+                            <div class="info-value">${person.degree}</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">💼</div>
+                        <div class="info-content">
+                            <div class="info-label">Current Role</div>
+                            <div class="info-value">${person.role}</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📅</div>
+                        <div class="info-content">
+                            <div class="info-label">Graduated</div>
+                            <div class="info-value">${person.year}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievement-tags">
+                    ${person.achievements.map(ach => `<span class="achievement-tag">${ach}</span>`).join('')}
+                </div>
+
+                <blockquote class="alumni-quote">"${person.quote}"</blockquote>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+function filterAlumni() {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    const filtered = alumni.filter(person => {
+        const matchFilter = currentFilter === 'all' || person.region === currentFilter;
+        const matchSearch = !searchTerm || 
+                          person.university.toLowerCase().includes(searchTerm) ||
+                          person.name.toLowerCase().includes(searchTerm) ||
+                          person.role.toLowerCase().includes(searchTerm);
+        return matchFilter && matchSearch;
+    });
+
+    renderAlumni(filtered);
+}
+
+// Filter tags
+filterTags.forEach(tag => {
+    tag.addEventListener('click', function() {
+        filterTags.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.dataset.filter;
+        filterAlumni();
+    });
+});
+
+// Search
+searchInput.addEventListener('input', filterAlumni);
+searchInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') filterAlumni();
+});
+
+// Initialize
+renderAlumni(alumni);
+</script>
+
+</body>
+</html>

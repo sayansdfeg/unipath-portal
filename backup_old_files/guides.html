@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портал Поступления | Гайды и Эссе</title>
+    <style>
+        :root {
+            --primary-color: #1a252f;
+            --accent-color: #3498db;
+            --hover-color: #2980b9;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* --- НАВИГАЦИОННОЕ МЕНЮ --- */
+        header {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-color);
+        }
+
+        /* --- ЗАГОЛОВОК СТРАНИЦЫ --- */
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .page-header h1 {
+            margin: 0 0 1rem 0;
+            font-size: 2.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #bdc3c7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- СЕТКА ГАЙДОВ --- */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+
+        .guide-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eaeaea;
+            transition: transform 0.3s;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .guide-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .guide-card h2 {
+            margin: 0 0 1rem 0;
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .guide-content h4 {
+            color: var(--accent-color);
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .guide-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .guide-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .pro-tip {
+            background-color: #e8f4fd;
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .guides-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="mainpage.php" class="logo">🎓 UniPath Portal</a>
+        <nav>
+            <ul>
+                <li><a href="mainpage.php">Главная</a></li>
+                <li><a href="ranking.php">Рейтинг Вузов</a></li>
+                <li><a href="alumni.HTML">Кейсы поступивших</a></li>
+                <li><a href="guides.html" class="active">Гайды и Эссе</a></li>
+                <li><a href="scholarships.php">Стипендии</a></li>
+                <li><a href="#">О нас / Помощь</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="page-header">
+    <h1>Гайды и Материалы</h1>
+    <p>Практические руководства по сдаче экзаменов, написанию мотивационных писем и упаковке профиля для поступления на грант.</p>
+</div>
+
+<div class="container">
+    <div class="guides-grid">
+
+        <div class="guide-card">
+            <span class="guide-icon">🎯</span>
+            <h2>Путь к IELTS 8.0 Overall</h2>
+            <div class="guide-content">
+                <p>Получить 8.0 — значит продемонстрировать уровень C1/C2. Ошибки здесь практически недопустимы. Вот на чем нужно сфокусироваться:</p>
+                
+                <h4>Reading & Listening (Нужно 8.5 - 9.0)</h4>
+                <ul>
+                    <li>Не читайте текст полностью. Используйте техники Skimming (поиск главной мысли) и Scanning (поиск конкретных слов).</li>
+                    <li>В Listening всегда читайте вопросы наперед, чтобы предсказать тип ответа (существительное, цифра, имя).</li>
+                </ul>
+
+                <h4>Writing (Нужно 7.0 - 7.5)</h4>
+                <ul>
+                    <li>Используйте сложную грамматику (Inversion, Conditional 3, Passive structures).</li>
+                    <li>Следите за связностью (Cohesion). Избегайте шаблонных фраз вроде "Firstly, Secondly". Заменяйте их на "A primary consideration is...".</li>
+                </ul>
+
+                <h4>Speaking (Нужно 7.5 - 8.0)</h4>
+                <ul>
+                    <li>Говорите бегло, не бойтесь исправлять себя, если оговорились (это показывает уверенность). Используйте идиомы к месту.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="guide-card">
+            <span class="guide-icon">💻</span>
+            <h2>Портфолио для Computer Science</h2>
+            <div class="guide-content">
+                <p>Европейские приемные комиссии хотят видеть практические навыки, а не только высокий GPA. Как правильно показать свой опыт:</p>
+                
+                <h4>Оформление GitHub</h4>
+                <ul>
+                    <li>Код должен быть чистым. Обязательно пишите подробный <code>README.md</code> для каждого репозитория.</li>
+                    <li>Пример: Если вы делали скрипт на Python для предсказания оценок или работы с 2D массивами, опишите логику работы алгоритма и приложите скриншоты.</li>
+                </ul>
+
+                <h4>Академические достижения</h4>
+                <ul>
+                    <li>Наличие академической статьи (например, о применении ИИ в образовании) — огромный плюс. Это доказывает ваши навыки ресерча. Укажите это в резюме!</li>
+                </ul>
+
+                <div class="pro-tip">
+                    <strong>Pro Tip:</strong> Не забывайте про soft skills. Участие в международных программах (как DofE) или серьезные занятия спортом (например, боевые искусства) покажут вашу дисциплину и умение справляться со стрессом.
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-card">
+            <span class="guide-icon">✍️</span>
+            <h2>Идеальное мотивационное письмо (Motivation Letter)</h2>
+            <div class="guide-content">
+                <p>Эссе для Европы (Германия, Италия, Швейцария) отличается от американского. Здесь нужен академический фокус.</p>
+                
+                <h4>Структура:</h4>
+                <ul>
+                    <li><strong>Введение:</strong> Почему этот университет и эта программа? (Избегайте клише "С детства люблю компьютеры").</li>
+                    <li><strong>Академический бэкграунд:</strong> Подчеркните сильную базу по химии, биологии или математике, и как это связано с анализом данных.</li>
+                    <li><strong>Практический опыт:</strong> Упомяните свои проекты, статьи и код. Как они подготовили вас к учебе в университете?</li>
+                    <li><strong>Планы на будущее:</strong> Кем вы видите себя через 5 лет после выпуска? Как грант поможет вам достичь этой цели?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="guide-card">
+            <span class="guide-icon">📊</span>
+            <h2>Подготовка к Digital SAT</h2>
+            <div class="guide-content">
+                <p>Для поступления на технические специальности балл по математике должен стремиться к максимуму (780-800).</p>
+                
+                <h4>Math Section</h4>
+                <ul>
+                    <li>Изучите использование встроенного калькулятора Desmos — он решает до 30% алгебраических задач за секунды.</li>
+                    <li>Внимательно читайте условия задач (word problems). Часто ошибка кроется не в математике, а в невнимательности.</li>
+                </ul>
+
+                <h4>Reading & Writing</h4>
+                <ul>
+                    <li>Учите корни слов (греческие/латинские) — это поможет угадывать значение сложных терминов в заданиях на Vocabulary.</li>
+                    <li>Сначала читайте вопрос, а потом сам текст. Так вы будете искать ответ целенаправленно.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
