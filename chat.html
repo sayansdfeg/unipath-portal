@@ -403,6 +403,67 @@
             border-color: rgba(91, 77, 255, 0.5);
         }
 
+        /* Formatted content styles */
+        .message-content p {
+            margin: 0.5em 0;
+            line-height: 1.6;
+        }
+
+        .message-content strong {
+            font-weight: 700;
+            color: #e8e8e8;
+        }
+
+        .message-content em {
+            font-style: italic;
+            color: #d0d0d0;
+        }
+
+        .message-content h1,
+        .message-content h2,
+        .message-content h3 {
+            margin: 1em 0 0.5em 0;
+            line-height: 1.3;
+        }
+
+        .message-content ul {
+            margin: 0.5em 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .message-content li {
+            margin-left: 1.5em;
+            margin-bottom: 0.3em;
+            position: relative;
+        }
+
+        .message-content li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #5B4DFF;
+            font-weight: bold;
+        }
+
+        .message-content pre {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8em;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 0.5em 0;
+            font-size: 0.9em;
+        }
+
+        .message-content code {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
         /* Loading state */
         .typing-indicator {
             display: flex;
@@ -1121,7 +1182,13 @@
 
             const content = document.createElement('div');
             content.className = 'message-content';
-            content.textContent = text;
+            
+            // Format AI messages, keep user messages as plain text
+            if (type === 'ai' || type === 'ai-message') {
+                content.innerHTML = formatMessage(text);
+            } else {
+                content.textContent = text;
+            }
 
             if (type === 'user') {
                 messageDiv.appendChild(content);
@@ -1164,6 +1231,57 @@
 
         function showError(message) {
             errorContainer.innerHTML = `<div class="error-message">⚠️ ${message}</div>`;
+        }
+
+        // Format markdown content safely
+        function formatMessage(text) {
+            // Escape HTML to prevent XSS
+            let escaped = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+
+            // Convert markdown formatting
+            // Bold: **text** → <strong>text</strong>
+            escaped = escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+            // Italic: *text* → <em>text</em>
+            escaped = escaped.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+            // Headings: ### Heading → <h3>Heading</h3>
+            escaped = escaped.replace(/^### (.+)$/gm, '<h3 style="margin-top: 1em; margin-bottom: 0.5em; font-size: 1.1em; font-weight: 600; color: #e8e8e8;">$1</h3>');
+            escaped = escaped.replace(/^## (.+)$/gm, '<h2 style="margin-top: 1.2em; margin-bottom: 0.5em; font-size: 1.2em; font-weight: 700; color: #f0f0f0;">$1</h2>');
+            escaped = escaped.replace(/^# (.+)$/gm, '<h1 style="margin-top: 1.3em; margin-bottom: 0.5em; font-size: 1.4em; font-weight: 700; color: #f0f0f0;">$1</h1>');
+
+            // List items: * item → • item
+            escaped = escaped.replace(/^\* (.+)$/gm, '<li style="margin-left: 1.5em; margin-bottom: 0.3em;">$1</li>');
+
+            // Wrap consecutive <li> items in <ul>
+            escaped = escaped.replace(/(<li[^>]*>.*?<\/li>)/s, '<ul style="list-style: none; padding: 0; margin: 0.5em 0;">$1</ul>');
+
+            // Numbers list: 1. item
+            escaped = escaped.replace(/^\d+\. (.+)$/gm, '<li style="margin-left: 1.5em; margin-bottom: 0.3em;">$1</li>');
+
+            // Code blocks: ```code``` → <pre><code>
+            escaped = escaped.replace(/```(.+?)```/gs, '<pre style="background: rgba(255,255,255,0.08); padding: 0.8em; border-radius: 8px; overflow-x: auto; margin: 0.5em 0; font-size: 0.9em;"><code>$1</code></pre>');
+
+            // Inline code: `code` → <code>
+            escaped = escaped.replace(/`([^`]+)`/g, '<code style="background: rgba(255,255,255,0.08); padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em;">$1</code>');
+
+            // Line breaks: convert \n to <br>
+            escaped = escaped.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+
+            // Wrap paragraphs
+            if (!escaped.includes('<p>')) {
+                escaped = '<p>' + escaped + '</p>';
+            }
+
+            // Clean up empty paragraphs
+            escaped = escaped.replace(/<p>\s*<\/p>/g, '');
+
+            return escaped;
         }
 
         function selectSuggestion(text) {
