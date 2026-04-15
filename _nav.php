@@ -19,6 +19,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li><a href="scholarships.php" class="nav-link <?php echo $current_page === 'scholarships.php' ? 'active' : ''; ?>">Стипендии</a></li>
                 <li><a href="guides.html" class="nav-link <?php echo $current_page === 'guides.html' ? 'active' : ''; ?>">Гайды</a></li>
                 <li><a href="alumni.html" class="nav-link <?php echo $current_page === 'alumni.html' ? 'active' : ''; ?>">Выпускники</a></li>
+                <li><a href="chat.html" class="nav-link <?php echo $current_page === 'chat.html' ? 'active' : ''; ?>">🤖 AI помощник</a></li>
             </ul>
         </nav>
 
