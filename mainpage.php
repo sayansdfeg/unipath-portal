@@ -1094,36 +1094,6 @@ if (session_status() === PHP_SESSION_NONE) {
         if (e.key === 'Enter') filterUniversities();
     });
 </script>
-<!-- ТВОЙ САЙТ ВЫШЕ -->
-
-<div id="chat" style="position:fixed;bottom:20px;right:20px;width:300px;background:#fff;border:1px solid #ccc;padding:10px;">
-  <div id="messages" style="height:200px;overflow:auto;"></div>
-  <input id="input" placeholder="Спроси про университет..." style="width:70%;">
-  <button onclick="send()">➤</button>
-</div>
-
-<script>
-async function send() {
-  let input = document.getElementById("input");
-  let text = input.value;
-
-  document.getElementById("messages").innerHTML += "<p><b>Ты:</b> " + text + "</p>";
-
-  const res = await fetch("chat.php", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({message: text})
-  });
-
-  const data = await res.json();
-  const reply = data.reply || "Ошибка";
-
-  document.getElementById("messages").innerHTML += "<p><b>AI:</b> " + reply + "</p>";
-
-  input.value = "";
-}
-</script>
-
 </body>
 </html>
 </body>
